@@ -1,14 +1,12 @@
 import React from "react";
+import { SecondaryButton } from "ui/buttons";
+import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import ListItemText from "@mui/material/ListItemText";
-import ListItem from "@mui/material/ListItem";
 import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
@@ -36,23 +34,34 @@ export function Header() {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Open full-screen dialog
-      </Button>
+      <SecondaryButton
+        sx={{ color: "black", border: "1px solid transparent" }}
+        variant="outlined"
+        onClick={handleClickOpen}
+      >
+        <MenuIcon></MenuIcon>
+      </SecondaryButton>
       <Dialog
         fullScreen
         open={open}
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar
-          sx={{
-            backgroundColor: "black",
-            color: "white",
-          }}
-        >
-          <Toolbar>
+        <div style={{ backgroundColor: "black" }}>
+          <AppBar
+            sx={{
+              position: "relative",
+              color: "white",
+              backgroundColor: "black",
+            }}
+          >
             <IconButton
+              sx={{
+                position: "absolute",
+                zIndex: 1200,
+                marginTop: 1,
+                marginLeft: 1,
+              }}
               edge="start"
               color="inherit"
               onClick={handleClose}
@@ -60,21 +69,50 @@ export function Header() {
             >
               <CloseIcon />
             </IconButton>
-            <LargeText>Panel de control</LargeText>
-          </Toolbar>
-        </AppBar>
-        <List sx={{ marginTop: 5 }}>
-          <ListItem button>
-            <ListItemText primary="Phone ringtone" secondary="Titania" />
-          </ListItem>
-          <Divider />
-          <ListItem button>
-            <ListItemText
-              primary="Default notification ringtone"
-              secondary="Tethys"
-            />
-          </ListItem>
-        </List>
+            <Toolbar
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <LargeText
+                sx={{
+                  marginTop: 0,
+                  marginBottom: 0,
+                  justifySelf: "center",
+                }}
+              >
+                Panel de control
+              </LargeText>
+            </Toolbar>
+          </AppBar>
+          <List
+            sx={{
+              marginTop: 1,
+              backgroundColor: "black",
+              height: "100vh",
+              display: "flex",
+              flexDirection: "column",
+              textAlign: "center",
+            }}
+          >
+            <br></br>
+            <Subtitle color="white"> Ingresa</Subtitle>
+            <br></br>
+            <br></br>
+            <Subtitle color="white"> Mi perfil</Subtitle>
+            <br></br>
+            <br></br>
+            <Subtitle color="white"> Buscar</Subtitle>
+            <br></br>
+            <br></br>
+            <LargeText color="white">email</LargeText>
+            <SecondaryButton>
+              <Subtitle color="white">Logout</Subtitle>
+            </SecondaryButton>
+          </List>
+        </div>
       </Dialog>
     </div>
   );

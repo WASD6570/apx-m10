@@ -33,6 +33,7 @@ const TextField = styled(TextFieldComp)`
     animation-duration: 0;
     border-radius: var(--border-radius);
     border: 3px solid #000;
+    padding: 8px 7px;
   }
 `;
 

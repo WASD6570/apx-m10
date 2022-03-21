@@ -10,6 +10,11 @@ interface Props extends ButtonBaseProps {
   callback?: () => void;
 }
 
+interface SecondaryProps extends ButtonBaseProps {
+  color: "blue" | "orange" | "pink";
+  callback?: () => void;
+}
+
 function BaseBttn({ color }: any, Component: any) {
   return styled(Component)`
     background-color: ${color === "blue"
@@ -21,6 +26,12 @@ function BaseBttn({ color }: any, Component: any) {
     text-transform: none;
   `;
 }
+
+export const SecondaryButton = styled(MaterialButton)`
+  border-radius: var(--border-radius);
+  text-transform: none;
+  background-color: transparent;
+`;
 
 export const MainButton = ({ color, children, callback }: Props) => {
   const [state, setState] = useState(children);
