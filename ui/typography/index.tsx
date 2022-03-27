@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import React from "react";
 
 interface baseType extends React.HTMLAttributes<HTMLElement> {
-  children: JSX.Element | string;
+  children: any;
   color?: string;
   bold?: boolean;
   sx?: Object;

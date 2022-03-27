@@ -14,9 +14,9 @@ const StyledCardContent = styled(CardContent)`
   justify-content: space-between;
 `;
 
-export function Card() {
+export function Card({ sx }: any) {
   return (
-    <StyledCard>
+    <StyledCard sx={{ ...sx }}>
       <CardMedia
         component="img"
         height="237"

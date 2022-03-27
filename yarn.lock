@@ -3342,7 +3342,7 @@ react-emotion@^10.0.0:
   resolved "https://registry.yarnpkg.com/react-emotion/-/react-emotion-10.0.0.tgz#03adf5a93f9dc41396401551566adf9668a2418e"
   integrity sha512-HMEH1I0m4AxJzG31ii/g227WhR0RBlRdr2M4C0n7yg9s3SiAPGB7lxvc/EoE8ixU9PLeOlBOb/n0wo42tGu99Q==
 
-react-hook-form@^7.28.0:
+react-hook-form@^7.28.1:
   version "7.28.1"
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.28.1.tgz#95fc37be6c6b9d57212eb7eca055fb36d079b3b7"
   integrity sha512-mgwxvXuvt3FMY/mdnWbPc++Zf1U5xYzkhOaL05mtFMLvXc9MvUhMUlKtUVuO12sOrgT3nPXBgVFawtiJ4ONrgg==
@@ -3703,6 +3703,11 @@ svgo@^1.2.2:
     stable "^0.1.8"
     unquote "~1.1.1"
     util.promisify "~1.0.0"
+
+swr@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/swr/-/swr-1.2.2.tgz#6cae09928d30593a7980d80f85823e57468fac5d"
+  integrity sha512-ky0BskS/V47GpW8d6RU7CPsr6J8cr7mQD6+do5eky3bM0IyJaoi3vO8UhvrzJaObuTlGhPl2szodeB2dUd76Xw==
 
 text-table@^0.2.0:
   version "0.2.0"

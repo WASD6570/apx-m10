@@ -1,13 +1,15 @@
 import styled from "@emotion/styled";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import MaterialButton from "@mui/material/Button";
 import React from "react";
 import type { ButtonBaseProps } from "@mui/material/ButtonBase";
 import CircularProgress from "@mui/material/CircularProgress";
-
+import { BoldText } from "ui/typography";
+import { AnyStyledComponent } from "styled-components";
 interface Props extends ButtonBaseProps {
   color: "blue" | "orange" | "pink";
-  callback?: () => void;
+  callback?: () => any;
+  children: string | JSX.Element | null;
 }
 
 interface SecondaryProps extends ButtonBaseProps {
@@ -18,10 +20,10 @@ interface SecondaryProps extends ButtonBaseProps {
 function BaseBttn({ color }: any, Component: any) {
   return styled(Component)`
     background-color: ${color === "blue"
-      ? "var(--blue)"
+      ? "var(--blue) !important"
       : color === "orange"
-      ? "var(--orange)"
-      : "var(--pink)"};
+      ? "var(--orange) !important"
+      : "var(--pink) !important"};
     border-radius: var(--border-radius);
     text-transform: none;
   `;
@@ -33,19 +35,14 @@ export const SecondaryButton = styled(MaterialButton)`
   background-color: transparent;
 `;
 
-export const MainButton = ({ color, children, callback }: Props) => {
-  const [state, setState] = useState(children);
+export const LoaderButton = ({ color, children, callback, sx }: Props) => {
+  const [childrenElements, setChildren] = useState(children);
   const [loading, setLoading] = useState(false);
-  const [fixedWidth, setFixedWidth] = useState();
   const BaseButton = BaseBttn({ color }, MaterialButton);
   const button: any = useRef();
 
-  useEffect(() => {
-    setFixedWidth(button.current.clientWidth);
-  }, []);
-
   function clickHandler() {
-    setState(null);
+    setChildren(null);
     setLoading(!loading);
     callback ? callback() : null;
   }
@@ -55,13 +52,27 @@ export const MainButton = ({ color, children, callback }: Props) => {
       onClick={clickHandler}
       disabled={!!loading}
       ref={button}
-      sx={{ width: fixedWidth }}
+      sx={{ width: "100%", ...sx }}
     >
       {loading ? (
         <CircularProgress role="progressbar" color="success" size={24} />
       ) : (
-        state
+        <BoldText sx={{ color: "black" }}>{childrenElements}</BoldText>
       )}
+    </BaseButton>
+  );
+};
+
+export const MainButton = ({ color, children, callback, sx }: Props) => {
+  const BaseButton = BaseBttn({ color }, MaterialButton);
+
+  function clickHandler() {
+    callback ? callback() : null;
+  }
+
+  return (
+    <BaseButton onClick={clickHandler} sx={{ width: "100%", ...sx }}>
+      <BoldText sx={{ color: "black" }}>{children}</BoldText>
     </BaseButton>
   );
 };

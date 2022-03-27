@@ -5,36 +5,45 @@ import type { TextFieldProps } from "@mui/material/TextField";
 import React from "react";
 
 type Props = TextFieldProps & {
-  label?: string;
   type: React.InputHTMLAttributes<unknown>["type"];
+  textLabel?: string;
+  onValueChange?: (value: any) => void;
 };
 
 function TextFieldComp(props: Props) {
   return (
     <div className={props.className}>
-      {props.label ? <TinyText>{props.label}</TinyText> : null}
+      {props.textLabel ? <TinyText>{props.textLabel}</TinyText> : null}
       <MaterialTextField
-        className={props.className}
-        required={props.required}
-        error={props.error}
-        disabled={props.disabled}
-        type={props.type}
-        placeholder={props.type}
+        {...props}
+        onChange={(e) => {
+          if (props.onValueChange) {
+            props.onValueChange(e.target.value);
+          }
+        }}
       ></MaterialTextField>
     </div>
   );
 }
 
-const TextField = styled(TextFieldComp)`
+const Input = styled(TextFieldComp)`
   display: flex;
   flex-direction: column;
+  & > * {
+    margin: 2px;
+  }
+  & > div > label {
+    top: -3px;
+    transform: translate(10px, -21px);
+  }
+
   & > div > div > fieldset,
   input {
     animation-duration: 0;
     border-radius: var(--border-radius);
     border: 3px solid #000;
-    padding: 8px 7px;
+    padding: 10px 9px;
   }
 `;
 
-export { TextField };
+export { Input };
