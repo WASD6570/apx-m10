@@ -1,5 +1,5 @@
-import { HeaderMobile } from "ui/header";
+import { Layuot } from "ui/layout";
 
 export default function SearchPage() {
-  return <HeaderMobile searchBar={true}></HeaderMobile>;
+  return <Layuot searchBar={true}></Layuot>;
 }

@@ -1,21 +1,108 @@
 import useSWR from "swr";
 import { fetcher } from "lib/api";
 import { useState, useEffect } from "react";
+import { emailValidator } from "lib/utils";
+import { useRouter } from "next/router";
 
-function emailValidator(input: string): boolean {
-  return /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/.test(
-    input
-  );
+type LocalData = "email" | "token";
+
+export function useGetLocalData(item: LocalData) {
+  const [data, setData] = useState<string | null>(null);
+  useEffect(() => {
+    const data = localStorage.getItem(item);
+    setData(data);
+  }, []);
+  return data;
 }
 
-export function useLogin() {
+export function useIsLoggedIn() {
+  const token = useGetLocalData("token");
+  return !!token;
+}
+
+export function useLogOut() {
+  const [LogOut, setLogOut] = useState(false);
+  const router = useRouter();
+  useEffect(() => {
+    if (LogOut) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("email");
+      setLogOut(false);
+      router.push("/");
+      router.reload();
+    }
+  }, [LogOut]);
+  return setLogOut;
+}
+
+export function useResendEmail() {
+  const [email, setEmail] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  useEffect(() => {
+    if (email) {
+      setIsLoading(true);
+      fetcher("/auth", "POST", { email }).then((data: any) => {
+        data.message === true ? setIsSuccess(true) : setIsError(true);
+
+        setIsLoading(false);
+        setTimeout(() => {
+          setEmail(null);
+        }, 5000);
+      });
+    }
+  }, [email]);
+
+  return { setEmail, isLoading, isError, isSuccess };
+}
+
+export function useSendEmail() {
   const [email, setEmail] = useState();
   const { data, error } = useSWR(
     () => (email ? ["/auth", "POST", { email }] : null),
     fetcher
   );
 
+  useEffect(() => {
+    localStorage.setItem("email", email as any);
+  }, [email]);
+
   return { data, error, setEmail };
+}
+
+export function useSendCode() {
+  const [code, setCode] = useState();
+  const email = useGetLocalData("email");
+  const { data, error } = useSWR(
+    () =>
+      code ? ["/auth/token", "POST", { code: Number(code), email }] : null,
+    fetcher
+  );
+
+  useEffect(() => {
+    localStorage.setItem("token", data?.token as any);
+  }, [data]);
+
+  return { data, error, setCode };
+}
+
+export function useCode() {
+  const [input, setInput] = useState<any>();
+  const [error, setError] = useState(false);
+  const [code, setCode] = useState();
+
+  if (
+    (input?.toString().length >= 6 && !error) ||
+    (input?.toString().length < 5 && !error) ||
+    (input?.toString().length === 0 && !error)
+  ) {
+    setError(true);
+  } else if (input?.toString().length === 5 && code !== input) {
+    setError(false);
+    setCode(input);
+  }
+  return { setInput, error, code };
 }
 
 export function useEmail() {

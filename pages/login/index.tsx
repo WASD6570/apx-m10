@@ -5,12 +5,12 @@ import { Input } from "ui/textfield";
 import { MainButton } from "ui/buttons";
 import { Container } from "@mui/material";
 import Box from "@mui/material/Box";
-import { useEmail, useLogin } from "hooks";
 import { useRouter } from "next/router";
+import { useEmail, useSendEmail } from "hooks";
 
 const Login: NextPage = () => {
   const { correct, error, setValue } = useEmail();
-  const { data, error: loginError, setEmail } = useLogin();
+  const { setEmail } = useSendEmail();
   const router = useRouter();
 
   const handleSubmit = () => {
@@ -36,6 +36,7 @@ const Login: NextPage = () => {
             flexDirection: "column",
             justifyItems: "center",
             marginTop: "15%",
+            marginBottom: "20px",
           }}
         >
           <Subtitle sx={{ paddingBottom: "20px" }}>Login</Subtitle>

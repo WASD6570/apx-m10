@@ -7,17 +7,16 @@ type fetchParams = {
 };
 
 function getLocalStorage() {
-  const userData = localStorage.getItem("userData");
-  return userData ? JSON.parse(userData) : "";
+  return localStorage.getItem("token");
 }
 
 export async function fetcher(url: string, method: string, body: any) {
-  const userData = getLocalStorage();
+  const token = getLocalStorage();
   const response = await fetch(`${BASE_URL}${url}`, {
     method,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${userData.token}`,
+      Authorization: `Bearer ${token}`,
     },
     body: body ? JSON.stringify(body) : null,
   });

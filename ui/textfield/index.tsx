@@ -26,6 +26,45 @@ function TextFieldComp(props: Props) {
   );
 }
 
+function CodeInputComp(props: Props) {
+  return (
+    <div className={props.className}>
+      {props.textLabel ? <TinyText>{props.textLabel}</TinyText> : null}
+      <MaterialTextField
+        {...props}
+        onChange={(e) => {
+          if (props.onValueChange) {
+            props.onValueChange(e.target.value);
+          }
+        }}
+      ></MaterialTextField>
+    </div>
+  );
+}
+
+const CodeInput = styled(CodeInputComp)`
+  display: flex;
+  flex-direction: column;
+  & > * {
+    margin: 2px;
+  }
+  & > div > label {
+    top: -3px;
+    transform: translate(10px, -21px);
+  }
+
+  & > div > div > fieldset,
+  input {
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+    animation-duration: 0;
+    border-radius: var(--border-radius);
+    border: 3px solid #000;
+    padding: 10px 9px;
+  }
+`;
+
 const Input = styled(TextFieldComp)`
   display: flex;
   flex-direction: column;
@@ -46,4 +85,4 @@ const Input = styled(TextFieldComp)`
   }
 `;
 
-export { Input };
+export { Input, CodeInput };

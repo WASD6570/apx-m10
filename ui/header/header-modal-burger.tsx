@@ -9,8 +9,9 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
-import { Subtitle, LargeText } from "ui/typography";
+import { Subtitle, LargeText, LargeTextBold } from "ui/typography";
 import { useRouter } from "next/router";
+import { useIsLoggedIn, useGetLocalData, useLogOut } from "hooks";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -24,6 +25,9 @@ const Transition = React.forwardRef(function Transition(
 export function HeaderModalBurger({ color, openSearchBar }: any) {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
+  const isLoggedIn = useIsLoggedIn();
+  const email = useGetLocalData("email");
+  const logOut = useLogOut();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -42,6 +46,21 @@ export function HeaderModalBurger({ color, openSearchBar }: any) {
   const handleLogin = () => {
     router.push("/login");
     setOpen(false);
+  };
+
+  const handleCart = () => {
+    router.push("/cart");
+    setOpen(false);
+  };
+
+  const handleMyProfile = () => {
+    router.push("/profile");
+    setOpen(false);
+  };
+
+  const handleLogOut = () => {
+    setOpen(false);
+    logOut(true);
   };
 
   return (
@@ -99,11 +118,22 @@ export function HeaderModalBurger({ color, openSearchBar }: any) {
             }}
           >
             <br></br>
-            <SecondaryButton onClick={handleLogin}>
-              <Subtitle color="white">Login</Subtitle>
-            </SecondaryButton>
+            {!isLoggedIn && (
+              <SecondaryButton onClick={handleLogin}>
+                <Subtitle color="white">Login</Subtitle>
+              </SecondaryButton>
+            )}
+            {isLoggedIn && (
+              <SecondaryButton onClick={handleCart}>
+                <Subtitle color="white">Cart</Subtitle>
+              </SecondaryButton>
+            )}
             <br></br>
-            <SecondaryButton onClick={() => {}}>
+            <SecondaryButton
+              onClick={() => {
+                isLoggedIn ? handleMyProfile() : handleLogin();
+              }}
+            >
               <Subtitle color="white">My profile</Subtitle>
             </SecondaryButton>
             <br></br>
@@ -112,10 +142,22 @@ export function HeaderModalBurger({ color, openSearchBar }: any) {
             </SecondaryButton>
             <br></br>
             <br></br>
-            <LargeText color="white">email</LargeText>
-            <SecondaryButton>
-              <Subtitle color="white">Logout</Subtitle>
-            </SecondaryButton>
+            {isLoggedIn && <LargeText color="white">{email}</LargeText>}
+            {!isLoggedIn && (
+              <LargeText color="white">Please login {":)"}</LargeText>
+            )}
+            {isLoggedIn && (
+              <SecondaryButton onClick={handleLogOut}>
+                <Subtitle color="white">Logout</Subtitle>
+              </SecondaryButton>
+            )}
+            {!isLoggedIn && (
+              <SecondaryButton onClick={handleLogin}>
+                <LargeTextBold color="white">
+                  Get your dream product now!
+                </LargeTextBold>
+              </SecondaryButton>
+            )}
           </List>
         </div>
       </Dialog>

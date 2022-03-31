@@ -4,9 +4,23 @@ import { TwitterIcon, InstagramIcon, APXIcon } from "ui/icons";
 import { BoldText, Title, Subtitle, Text } from "ui/typography";
 import { OptionsWrapper, MediaWrapper, APXWrapper } from "ui/footer/styled";
 import { SecondaryButton } from "ui/buttons";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useIsLoggedIn, useLogOut } from "hooks";
 
-function Footer({ isLogged }: any) {
+function Footer() {
+  const router = useRouter();
+  const isLogged = useIsLoggedIn();
+  const logOut = useLogOut();
+  const handleLogin = () => router.push("/login");
+  const handleSearch = () => router.push("/search");
+  const handleMyProfile = () => {
+    isLogged ? router.push("/profile") : router.push("/login");
+  };
+
+  const handleLogOut = () => {
+    logOut(true);
+  };
+
   return (
     <>
       <Container
@@ -27,8 +41,8 @@ function Footer({ isLogged }: any) {
           <OptionsWrapper>
             {isLogged ? null : (
               <>
-                <SecondaryButton>
-                  {/* No preguntar porque los otros no tienen marginLeft !important */}
+                <SecondaryButton onClick={handleLogin}>
+                  {/* No preguntar porque los otros no tienen marginLeft, this is !important */}
                   <Text color="white" sx={{ marginLeft: "-8px" }}>
                     Login
                   </Text>
@@ -36,17 +50,17 @@ function Footer({ isLogged }: any) {
                 <br />
               </>
             )}
-            <SecondaryButton>
+            <SecondaryButton onClick={handleMyProfile}>
               <Text color="white">My profile</Text>
             </SecondaryButton>
             <br />
-            <SecondaryButton>
+            <SecondaryButton onClick={handleSearch}>
               <Text color="white">Search</Text>
             </SecondaryButton>
             <br />
             {!isLogged ? null : (
               <>
-                <SecondaryButton>
+                <SecondaryButton onClick={handleLogOut}>
                   <Text color="white">Logout</Text>
                 </SecondaryButton>
               </>

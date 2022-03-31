@@ -12,9 +12,8 @@ interface Props extends ButtonBaseProps {
   children: string | JSX.Element | null;
 }
 
-interface SecondaryProps extends ButtonBaseProps {
-  color: "blue" | "orange" | "pink";
-  callback?: () => void;
+interface SecondaryProps extends Props {
+  isLoading?: boolean;
 }
 
 function BaseBttn({ color }: any, Component: any) {
@@ -35,9 +34,15 @@ export const SecondaryButton = styled(MaterialButton)`
   background-color: transparent;
 `;
 
-export const LoaderButton = ({ color, children, callback, sx }: Props) => {
+export const LoaderButton = ({
+  color,
+  children,
+  callback,
+  sx,
+  isLoading = false,
+}: SecondaryProps) => {
   const [childrenElements, setChildren] = useState(children);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(isLoading);
   const BaseButton = BaseBttn({ color }, MaterialButton);
   const button: any = useRef();
 
