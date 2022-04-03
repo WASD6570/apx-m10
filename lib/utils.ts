@@ -3,3 +3,20 @@ export function emailValidator(input: string): boolean {
     input
   );
 }
+
+export function pagination({
+  rawLimit,
+  total,
+  offset,
+}: {
+  rawLimit: number;
+  total: number;
+  offset: number;
+}): { limit: number; total: number; offset: number } {
+  const limit = rawLimit > total ? total : rawLimit;
+  return {
+    limit,
+    total,
+    offset,
+  };
+}

@@ -1,7 +1,7 @@
-import { HeaderMobile } from "ui/header";
-import { Footer } from "ui/footer";
+import { HeaderMobile } from "components/header";
+import { Footer } from "components/footer";
 
-export const Layuot = ({ children, searchBar }: any) => {
+export const Layout = ({ children, searchBar }: any) => {
   return (
     <>
       <HeaderMobile searchBar={searchBar}></HeaderMobile>

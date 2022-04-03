@@ -1,5 +1,5 @@
-import { HeaderModalBurger } from "ui/header/header-modal-burger";
-import React, { useState } from "react";
+import { HeaderModalBurger } from "components/header/header-modal-burger";
+import React, { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -11,7 +11,7 @@ import {
   Search,
   SearchIconWrapper,
   StyledInputBase,
-} from "ui/header/styled";
+} from "components/header/styled";
 import { useRouter } from "next/router";
 
 type HeaderMobile = {
@@ -21,6 +21,13 @@ type HeaderMobile = {
 export function HeaderMobile({ searchBar }: HeaderMobile) {
   const [searchBarClose, setSearchBarClose] = useState(searchBar);
   const router = useRouter();
+  const [input, setInput] = useState<null | string>(null);
+
+  const handleSearch = () => {
+    if (input) {
+      router.push(`/search?q=${input}`);
+    }
+  };
 
   function returnHome(): void {
     router.push("/");
@@ -43,11 +50,14 @@ export function HeaderMobile({ searchBar }: HeaderMobile) {
               <SearchIcon sx={{ color: "white" }} />
             </SearchIconWrapper>
             <StyledInputBase
+              onChange={(e) => setInput(e.target.value)}
               placeholder="Find your favorite products"
               inputProps={{ "aria-label": "search" }}
             />
           </Search>
-          <MainButton color="orange">Search</MainButton>
+          <MainButton color="orange" callback={handleSearch}>
+            Search
+          </MainButton>
         </SearchWrapper>
       )}
     </Box>

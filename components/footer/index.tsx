@@ -2,7 +2,11 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { TwitterIcon, InstagramIcon, APXIcon } from "ui/icons";
 import { BoldText, Title, Subtitle, Text } from "ui/typography";
-import { OptionsWrapper, MediaWrapper, APXWrapper } from "ui/footer/styled";
+import {
+  OptionsWrapper,
+  MediaWrapper,
+  APXWrapper,
+} from "components/footer/styled";
 import { SecondaryButton } from "ui/buttons";
 import { useRouter } from "next/router";
 import { useIsLoggedIn, useLogOut } from "hooks";
@@ -24,7 +28,7 @@ function Footer() {
   return (
     <>
       <Container
-        maxWidth="sm"
+        maxWidth={false}
         sx={{ backgroundColor: "black", marginTop: "auto" }}
       >
         <Box

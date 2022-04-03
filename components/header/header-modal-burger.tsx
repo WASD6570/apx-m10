@@ -38,8 +38,7 @@ export function HeaderModalBurger({ color, openSearchBar }: any) {
   };
 
   const handleSearchBar = () => {
-    router.push("/search");
-    openSearchBar(true);
+    router.push("/");
     setOpen(false);
   };
 

@@ -7,7 +7,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { BoldText } from "ui/typography";
 import { AnyStyledComponent } from "styled-components";
 interface Props extends ButtonBaseProps {
-  color: "blue" | "orange" | "pink";
+  color: "blue" | "orange" | "pink" | "lightblue";
   callback?: () => any;
   children: string | JSX.Element | null;
 }
@@ -22,6 +22,8 @@ function BaseBttn({ color }: any, Component: any) {
       ? "var(--blue) !important"
       : color === "orange"
       ? "var(--orange) !important"
+      : color === "lightblue"
+      ? "var(--lightblue) !important"
       : "var(--pink) !important"};
     border-radius: var(--border-radius);
     text-transform: none;

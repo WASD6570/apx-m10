@@ -16,7 +16,8 @@ export function useGetLocalData(item: LocalData) {
 }
 
 export function useIsLoggedIn() {
-  const token = useGetLocalData("token");
+  let token = useGetLocalData("token");
+  token === "undefined" ? (token = null) : token;
   return !!token;
 }
 
@@ -45,8 +46,8 @@ export function useResendEmail() {
       setIsLoading(true);
       fetcher("/auth", "POST", { email }).then((data: any) => {
         data.message === true ? setIsSuccess(true) : setIsError(true);
-
         setIsLoading(false);
+
         setTimeout(() => {
           setEmail(null);
         }, 5000);

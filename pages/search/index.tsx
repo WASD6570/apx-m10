@@ -1,5 +1,10 @@
-import { Layuot } from "ui/layout";
+import { Layout } from "components/layout";
+import { SearchPageComp } from "components/search-comp";
 
 export default function SearchPage() {
-  return <Layuot searchBar={true}></Layuot>;
+  return (
+    <Layout searchBar={true}>
+      <SearchPageComp />
+    </Layout>
+  );
 }
