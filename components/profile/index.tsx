@@ -2,21 +2,34 @@ import { LargeText, Subtitle, LargeTextBold } from "ui/typography";
 import { MainButton } from "ui/buttons";
 import { Container } from "@mui/material";
 import { useRouter } from "next/router";
-import { useProfileData, useGetLocalData } from "hooks";
+import { useProfileData, useGetLocalData, useModifyProfileData } from "hooks";
 import { Controller, useForm } from "react-hook-form";
 import { HookForm } from "./form";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
+import { useEffect } from "react";
 
 export const ProfileForm = () => {
   const { handleSubmit, reset, control } = useForm();
   const router = useRouter();
   const token = useGetLocalData("token");
   const { data, error, isLoading } = useProfileData();
+  const {
+    setData,
+    data: updatedData,
+    error: updateError,
+    isLoading: updateLoading,
+  } = useModifyProfileData();
 
-  const submit = (data: any) => {
-    console.log(data);
+  const submit = (newData: any) => {
+    setData(newData);
   };
+
+  useEffect(() => {
+    if (updatedData) {
+      router.reload();
+    }
+  }, [updatedData]);
 
   return (
     <Container
@@ -45,11 +58,12 @@ export const ProfileForm = () => {
             />
           </Box>
         )}
+
         {!isLoading && !error && token && (
           <form>
             <HookForm
               Controller={Controller}
-              userData={data?.userData}
+              userData={updatedData ? updatedData.UserData : data.userData}
               control={control}
             />
             <MainButton

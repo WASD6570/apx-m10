@@ -1,5 +1,5 @@
-//const BASE_URL = "https://apx-m9.vercel.app/api";
-const BASE_URL = "http://localhost:3000/api";
+const BASE_URL = "https://apx-m9.vercel.app/api";
+//const BASE_URL = "http://localhost:3000/api";
 
 type fetchParams = {
   url: string;
@@ -7,7 +7,7 @@ type fetchParams = {
   body?: any;
 };
 
-function getLocalStorage() {
+export function getLocalStorage() {
   return localStorage.getItem("token");
 }
 

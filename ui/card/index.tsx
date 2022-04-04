@@ -41,54 +41,13 @@ export function Card({ sx, product }: any) {
   );
 }
 
-const StyledProductCard = styled(MaterialCard)`
+export const StyledProductCard = styled(MaterialCard)`
   border: none;
   box-shadow: none;
 `;
 
-const StyledProductCardContent = styled(CardContent)`
+export const StyledProductCardContent = styled(CardContent)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 `;
-
-export function ProductCard({ product, sx }: any) {
-  return (
-    <StyledProductCard sx={{ ...sx }}>
-      <CardMedia
-        component="img"
-        height="237"
-        image={product.Images[0].url}
-        alt="green iguana"
-      />
-      <StyledProductCardContent
-        sx={{
-          padding: 0,
-          "& > *": {
-            margin: "10px 0px",
-          },
-        }}
-      >
-        <Subtitle>{product.Name}</Subtitle>
-        <Title>{"$" + product["Unit cost"]}</Title>
-        <MainButton
-          color="lightblue"
-          sx={{
-            height: "63px",
-            "& > *": {
-              fontStyle: "normal",
-              fontWeight: 700,
-              fontSize: "32px",
-              lineHeight: "39px",
-            },
-          }}
-        >
-          Buy Now
-        </MainButton>
-        <Text sx={{ marginBottom: "30px", marginTop: "20px" }}>
-          Description: {product.Description}
-        </Text>
-      </StyledProductCardContent>
-    </StyledProductCard>
-  );
-}

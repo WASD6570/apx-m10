@@ -20,7 +20,7 @@ export const CodePage = () => {
   const { data, error: fetchError, setCode } = useSendCode();
   const { setEmail, isError, isSuccess, isLoading } = useResendEmail();
   const localData = useGetLocalData("email");
-  const { setSend } = useProfileSetUp();
+  const { setSend, setToken } = useProfileSetUp();
   const handleSubmit = () => {
     if (code && !error) {
       setCode(code);
@@ -36,6 +36,7 @@ export const CodePage = () => {
   useEffect(() => {
     if (data) {
       setLoading(true);
+      setToken(data.token);
       setSend(true);
     }
     if (fetchError) {
