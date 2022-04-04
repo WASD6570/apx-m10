@@ -16,7 +16,7 @@ function Footer() {
   const isLogged = useIsLoggedIn();
   const logOut = useLogOut();
   const handleLogin = () => router.push("/login");
-  const handleSearch = () => router.push("/search");
+  const handleSearch = () => router.push("/");
   const handleMyProfile = () => {
     isLogged ? router.push("/profile") : router.push("/login");
   };

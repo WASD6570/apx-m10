@@ -10,7 +10,7 @@ type Props = TextFieldProps & {
   onValueChange?: (value: any) => void;
 };
 
-function TextFieldComp(props: Props) {
+function TextFieldComp(props: any) {
   return (
     <div className={props.className}>
       {props.textLabel ? <TinyText>{props.textLabel}</TinyText> : null}
@@ -85,4 +85,24 @@ const Input = styled(TextFieldComp)`
   }
 `;
 
-export { Input, CodeInput };
+const InputProfile = styled(MaterialTextField)`
+  display: flex;
+  flex-direction: column;
+  & > * {
+    margin: 2px;
+  }
+  & > div > label {
+    top: -3px;
+    transform: translate(10px, -21px);
+  }
+
+  & > div > div > fieldset,
+  input {
+    animation-duration: 0;
+    border-radius: var(--border-radius);
+    border: 3px solid #000;
+    padding: 10px 9px;
+  }
+`;
+
+export { Input, CodeInput, InputProfile };

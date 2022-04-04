@@ -1,19 +1,26 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Subtitle, Text } from "ui/typography";
 import { CodeInput } from "ui/textfield";
-import { MainButton, SecondaryButton } from "ui/buttons";
+import { MainButton, SecondaryButton, LoaderButton } from "ui/buttons";
 import { Container } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
-import { useCode, useSendCode, useResendEmail, useGetLocalData } from "hooks";
+import {
+  useCode,
+  useSendCode,
+  useResendEmail,
+  useGetLocalData,
+  useProfileSetUp,
+} from "hooks";
 
 export const CodePage = () => {
   const { error, setInput, code } = useCode();
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { data, error: fetchError, setCode } = useSendCode();
   const { setEmail, isError, isSuccess, isLoading } = useResendEmail();
   const localData = useGetLocalData("email");
-
+  const { setSend } = useProfileSetUp();
   const handleSubmit = () => {
     if (code && !error) {
       setCode(code);
@@ -28,9 +35,15 @@ export const CodePage = () => {
 
   useEffect(() => {
     if (data) {
-      router.push("/");
+      setLoading(true);
+      setSend(true);
+    }
+    if (fetchError) {
+      window.alert("wrong code");
+      router.reload();
     }
   }, [data, fetchError]);
+
   return (
     <Container
       maxWidth="sm"
@@ -62,9 +75,15 @@ export const CodePage = () => {
           inputProps={{ maxLength: 5 }}
         ></CodeInput>
         <br />
-        <MainButton color="orange" sx={{ height: 50 }} callback={handleSubmit}>
+        <LoaderButton
+          color="orange"
+          sx={{ height: 50 }}
+          callback={handleSubmit}
+          isLoading={loading}
+          disabled={loading}
+        >
           Login
-        </MainButton>
+        </LoaderButton>
         <div
           style={{
             display: "flex",

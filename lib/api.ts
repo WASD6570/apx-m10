@@ -21,6 +21,9 @@ export async function fetcher(url: string, method: string, body?: any) {
     },
     body: body ? JSON.stringify(body) : null,
   });
+  if (response.status.toString()[0] === "4") {
+    throw new Error(response.statusText);
+  }
   return await response.json();
 }
 
@@ -33,5 +36,8 @@ export async function staticFetcher(url: string, method: string, body?: any) {
     },
     body: body ? JSON.stringify(body) : null,
   });
+  if (response.status.toString()[0] === "4") {
+    return await response.json();
+  }
   return await response.json();
 }

@@ -2,7 +2,7 @@ import useSWR from "swr";
 import { fetcher } from "lib/api";
 import { useState, useEffect } from "react";
 import { emailValidator } from "lib/utils";
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
 
 type LocalData = "email" | "token";
 
@@ -29,8 +29,10 @@ export function useLogOut() {
       localStorage.removeItem("token");
       localStorage.removeItem("email");
       setLogOut(false);
+      if (router.pathname === "/") {
+        router.reload();
+      }
       router.push("/");
-      router.reload();
     }
   }, [LogOut]);
   return setLogOut;
@@ -78,7 +80,10 @@ export function useSendCode() {
   const { data, error } = useSWR(
     () =>
       code ? ["/auth/token", "POST", { code: Number(code), email }] : null,
-    fetcher
+    fetcher,
+    {
+      onErrorRetry: (error, key, config, revalidate, { retryCount }) => {},
+    }
   );
 
   useEffect(() => {
@@ -126,4 +131,73 @@ export function useEmail() {
   }
 
   return { correct, error, setValue };
+}
+
+export function useProfileData() {
+  const router = useRouter();
+  const token = useGetLocalData("token");
+  const { data, error } = useSWR(
+    () => (token !== "undefined" && token ? ["/me", "GET"] : null),
+    fetcher,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+        // Never retry on 404.
+        if (error.message == "Not found") return;
+
+        if (error.message == "Unauthorized") return;
+
+        // Only retry up to 10 times.
+        if (retryCount >= 10) return;
+        setTimeout(() => revalidate({ retryCount }), 5000);
+      },
+    }
+  );
+  return { data, error, isLoading: !data && !error };
+}
+
+export function useProfileSetUp() {
+  const [send, setSend] = useState<boolean>(false);
+  const router = useRouter();
+  const { data: InitialData, error: initialDataError } = useProfileData();
+  const [userData, setuserData] = useState<any>();
+  useEffect(() => {
+    if (InitialData && !initialDataError && send) {
+      fetcher("/me", "PATCH", {
+        userData: { name: "", adress: "", phone: "", ...InitialData.userData },
+      }).then((data: any) => {
+        setuserData(data);
+        InitialData.name == "" ? router.push("/profile") : router.push("/");
+      });
+    }
+  }, [InitialData, send]);
+
+  return { setSend };
+}
+
+export function useModifyProfileData() {
+  const [newData, setData] = useState<any>(null);
+  const { data, error } = useSWR(
+    () => (newData ? ["/me", "PATCH", { userData: { ...newData } }] : null),
+    fetcher,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+        // Never retry on 404.
+        if (error.message == "Not found") return;
+
+        if (error.message == "Unauthorized") return;
+
+        // Only retry up to 10 times.
+        if (retryCount >= 10) return;
+        setTimeout(() => revalidate({ retryCount }), 5000);
+      },
+    }
+  );
+
+  return { setData, data, error, isLoading: !data && !error };
 }
