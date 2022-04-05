@@ -67,6 +67,7 @@ const CodeInput = styled(CodeInputComp)`
 
 const Input = styled(TextFieldComp)`
   display: flex;
+  min-height: 52px;
   flex-direction: column;
   & > * {
     margin: 2px;

@@ -33,7 +33,7 @@ export function Card({ sx, product }: any) {
         image={product.Images[0].url}
         alt="green iguana"
       />
-      <StyledCardContent>
+      <StyledCardContent sx={{ height: "100%" }}>
         <LargeText>{product.Name}</LargeText>
         <Subtitle>{"$" + product["Unit cost"]}</Subtitle>
       </StyledCardContent>

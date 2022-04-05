@@ -31,6 +31,8 @@ export const ProfileForm = () => {
     }
   }, [updatedData]);
 
+  console.log(data);
+
   return (
     <Container
       maxWidth="sm"

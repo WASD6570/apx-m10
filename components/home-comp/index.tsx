@@ -49,6 +49,7 @@ export function MainPage({ topProducts }: MainPageProps) {
                 "&& .MuiTouchRipple-child": {
                   backgroundColor: "white",
                 },
+                marginBotton: "20px",
               }}
             >
               Search
@@ -56,28 +57,78 @@ export function MainPage({ topProducts }: MainPageProps) {
           </SearchWrapper>
         </Box>
       </Container>
-      <Container maxWidth={false} sx={{ backgroundColor: "var(--pink)" }}>
+      <Container
+        maxWidth={false}
+        sx={{
+          backgroundColor: "var(--pink)",
+          "@media (min-width: 769px)": {
+            backgroundColor: "var(--lightblue)",
+          },
+        }}
+      >
         <Box
           sx={{
-            backgroundColor: "var(--pink)",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            textAlign: "center",
-            alignItems: "center",
-            "&& > *": {
-              margin: "20px",
+            "@media (min-width: 769px)": {
+              backgroundColor: "var(--lightblue)",
+              flexDirection: "column",
+              justifyContent: "center",
+              textAlign: "center",
+              display: "flex",
+              alignItems: "center",
             },
           }}
         >
-          <Subtitle color="white">
+          <Subtitle
+            color="white"
+            sx={{
+              "@media (min-width: 769px)": {
+                backgroundColor: "var(--lightblue)",
+                color: "black",
+                display: "inherit",
+                margin: "20px",
+              },
+              display: "none",
+            }}
+          >
             Productos <br /> destacados
           </Subtitle>
-          {topProducts.map((item, index) => {
-            return (
-              <Card key={index} product={item} sx={{ width: "100%" }}></Card>
-            );
-          })}
+          <Box
+            sx={{
+              "@media (min-width: 769px)": {
+                backgroundColor: "var(--lightblue)",
+                flexDirection: "row",
+              },
+              backgroundColor: "var(--pink)",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              textAlign: "center",
+              alignItems: "center",
+              "&& > *": {
+                margin: "20px",
+              },
+            }}
+          >
+            <Subtitle
+              color="white"
+              sx={{
+                "@media (min-width: 769px)": {
+                  display: "none",
+                },
+              }}
+            >
+              Productos <br /> destacados
+            </Subtitle>
+            {topProducts.map((item, index) => {
+              return (
+                <Card
+                  key={index}
+                  product={item}
+                  sx={{ width: "100%", maxWidth: "280px", height: "350px" }}
+                ></Card>
+              );
+            })}
+          </Box>
         </Box>
       </Container>
     </>

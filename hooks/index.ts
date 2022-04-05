@@ -11,6 +11,7 @@ export function useGetLocalData(item: LocalData) {
   const [data, setData] = useState<string | null>(null);
   useEffect(() => {
     const data = localStorage.getItem(item);
+    data == "undefined" ? setData(null) : setData(data);
     setData(data);
   }, []);
   return data;
@@ -18,7 +19,7 @@ export function useGetLocalData(item: LocalData) {
 
 export function useIsLoggedIn() {
   let token = useGetLocalData("token");
-  token === "undefined" ? (token = null) : token;
+  !token ? (token = null) : token;
   return !!token;
 }
 
@@ -135,15 +136,16 @@ export function useEmail() {
 }
 
 export function useProfileData() {
-  const router = useRouter();
+  //const router = useRouter();
   const token = useGetLocalData("token");
   const { data, error } = useSWR(
     () => (token !== "undefined" && token ? ["/me", "GET"] : null),
     fetcher,
     {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
+      revalidateIfStale: true,
+      revalidateOnFocus: true,
+      revalidateOnReconnect: true,
+      revalidateOnMount: true,
       onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
         // Never retry on 404.
         if (error.message == "Not found") return;
@@ -164,9 +166,9 @@ export function useProfileDataRefactor(token: string | null) {
     () => (token ? ["/me", "GET"] : null),
     fetcher,
     {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
+      revalidateIfStale: true,
+      revalidateOnFocus: true,
+      revalidateOnReconnect: true,
       onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
         // Never retry on 404.
         if (error.message == "Not found") return;
@@ -191,7 +193,7 @@ export function useProfileSetUp() {
   useEffect(() => {
     if (data && send) {
       fetcher("/me", "PATCH", {
-        userData: { name: "", adress: "", phone: "", ...data.userData },
+        userData: { name: "", address: "", phone: "", ...data.userData },
       }).then((data: any) => {
         setuserData(data);
         data.name == "" ? router.push("/profile") : router.push("/");
@@ -208,34 +210,10 @@ export function useModifyProfileData() {
     () => (newData ? ["/me", "PATCH", { userData: { ...newData } }] : null),
     fetcher,
     {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
-        // Never retry on 404.
-        if (error.message == "Not found") return;
-
-        if (error.message == "Unauthorized") return;
-
-        // Only retry up to 10 times.
-        if (retryCount >= 10) return;
-        setTimeout(() => revalidate({ retryCount }), 5000);
-      },
-    }
-  );
-
-  return { setData, data, error, isLoading: !data && !error };
-}
-
-export function useCreateOrder() {
-  const [product, setData] = useState<any>(null);
-  const { data, error } = useSWR(
-    () => (product ? [`/order?productId=${product}`, "POST"] : null),
-    fetcher,
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
+      revalidateIfStale: true,
+      revalidateOnFocus: true,
+      revalidateOnReconnect: true,
+      revalidateOnMount: true,
       onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
         // Never retry on 404.
         if (error.message == "Not found") return;

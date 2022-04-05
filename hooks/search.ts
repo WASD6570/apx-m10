@@ -6,8 +6,7 @@ export function useSearchProducts() {
   const [search, setSearch] = useState<string | null>(null);
   const [pageIndex, setPageIndex] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [products, setProducts] = useState<any>({});
-  const { data, error } = useSWR(
+  const { data: products, error } = useSWR(
     () => {
       return search
         ? [`/search?search=${search}&limit=3&offset=${pageIndex}`, "GET"]
@@ -22,9 +21,8 @@ export function useSearchProducts() {
   );
 
   useEffect(() => {
-    setProducts(data);
     setIsLoading(false);
-  }, [data]);
+  }, [products]);
 
   useEffect(() => {
     setPageIndex(0);

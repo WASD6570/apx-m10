@@ -1,24 +1,32 @@
 import { useRouter } from "next/router";
-import { MainButton } from "ui/buttons";
+import { useEffect, useState } from "react";
+import { MainButton, LoaderButton } from "ui/buttons";
 import { Subtitle, LargeText, Title, Text } from "ui/typography";
 import { StyledProductCard, StyledProductCardContent } from "ui/card";
 import CardMedia from "@mui/material/CardMedia";
-import { useCreateOrder } from "hooks";
+import { useCreateOrder } from "hooks/orders";
 
 export function ProductCard({ product, sx }: any) {
   const { data, isLoading, error, setData } = useCreateOrder();
-
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false);
+  const router = useRouter();
   const handleBuy = () => {
     setData(product.objectID);
+    setButtonLoading(true);
   };
 
-  console.log(data.link);
+  useEffect(() => {
+    if (data) {
+      window.open(data.link);
+      router.push(`/waiting?q=${data.orderId}`);
+    }
+  }, [data]);
   return (
     <StyledProductCard sx={{ ...sx }}>
       <CardMedia
         component="img"
         height="237"
-        image={product.Images[0].url}
+        image={product?.Images[0]?.url}
         alt="green iguana"
       />
       <StyledProductCardContent
@@ -29,11 +37,13 @@ export function ProductCard({ product, sx }: any) {
           },
         }}
       >
-        <Subtitle>{product.Name}</Subtitle>
+        <Subtitle>{product?.Name}</Subtitle>
         <Title>{"$" + product["Unit cost"]}</Title>
-        <MainButton
+        <LoaderButton
           color="lightblue"
           callback={handleBuy}
+          isLoading={buttonLoading}
+          disabled={buttonLoading}
           sx={{
             height: "63px",
             "& > *": {
@@ -45,7 +55,7 @@ export function ProductCard({ product, sx }: any) {
           }}
         >
           Buy Now
-        </MainButton>
+        </LoaderButton>
         <Text sx={{ marginBottom: "30px", marginTop: "20px" }}>
           Description: {product.Description}
         </Text>

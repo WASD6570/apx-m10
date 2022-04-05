@@ -7,6 +7,8 @@ export function HookForm({ Controller, control, userData }: any) {
     for (const key in userData) {
       if (key === "email") {
         info.push(null);
+      } else if (key === "purchases") {
+        info.push(null);
       } else {
         const datos = (
           <Controller

@@ -45,34 +45,29 @@ export function SearchPageComp() {
     <Container maxWidth={false}>
       <Box
         sx={{
-          position: "relative",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          textAlign: "center",
-          alignItems: "center",
-
-          "&& > *": {
-            margin: "20px",
-          },
-          "&& > *:first-child": {
-            textAlign: "left",
-            alignSelf: "flex-start",
-            margin: "20px 0px 0px 0px",
+          "@media (min-width: 769px)": {
+            flexDirection: "column",
+            justifyContent: "center",
+            textAlign: "center",
+            display: "flex",
+            alignItems: "center",
           },
         }}
       >
-        {isLoading && (
-          <Box sx={{ width: "100%" }}>
-            <LinearProgress
-              color="primary"
-              sx={{ backgroundColor: "var(--orange)" }}
-            />
-          </Box>
-        )}
-
         {!isLoading && products?.results?.length && (
-          <>
+          <Box
+            sx={{
+              "@media (min-width: 769px)": {
+                flexDirection: "row",
+                display: "flex",
+                justifyContent: "flex-start",
+                textAlign: "left",
+                marginRight: "calc(80vw - 19px)",
+                marginTop: "20px",
+              },
+              display: "none",
+            }}
+          >
             <div>
               <Text color="black">{`${
                 paginationData.offset + paginationData.limit <
@@ -81,11 +76,136 @@ export function SearchPageComp() {
                   : paginationData.total
               } resultados de ${paginationData.total}`}</Text>
             </div>
-            {products?.results?.map((item: any, index: number) => {
-              return (
-                <Card key={index} product={item} sx={{ width: "100%" }}></Card>
-              );
-            })}
+          </Box>
+        )}
+        {isLoading && (
+          <Box sx={{ width: "100%" }}>
+            <LinearProgress
+              color="primary"
+              sx={{ backgroundColor: "var(--orange)" }}
+            />
+          </Box>
+        )}
+        <Box
+          sx={{
+            "@media (min-width: 769px)": {
+              flexDirection: "row",
+            },
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            textAlign: "center",
+            alignItems: "center",
+            "&& > *": {
+              margin: "20px",
+            },
+            "&& > *:first-child": {
+              textAlign: "left",
+              alignSelf: "flex-start",
+              margin: "20px 0px 0px 0px",
+            },
+          }}
+        >
+          {!isLoading && products?.results?.length && (
+            <>
+              <Box
+                sx={{
+                  "@media (min-width: 769px)": {
+                    display: "none",
+                  },
+                }}
+              >
+                <div>
+                  <Text color="black">{`${
+                    paginationData.offset + paginationData.limit <
+                    paginationData.total
+                      ? paginationData.offset + paginationData.limit
+                      : paginationData.total
+                  } resultados de ${paginationData.total}`}</Text>
+                </div>
+              </Box>
+              {products?.results?.map((item: any, index: number) => {
+                return (
+                  <Card
+                    key={index}
+                    product={item}
+                    sx={{
+                      width: "100%",
+                      maxWidth: "280px",
+                      height: "350px",
+                    }}
+                  ></Card>
+                );
+              })}
+              <Box
+                sx={{
+                  "@media (min-width: 769px)": {
+                    display: "none",
+                  },
+                }}
+              >
+                <div>
+                  {paginationData.offset + paginationData.limit !==
+                    paginationData.limit && (
+                    <SecondaryButton
+                      onClick={() => {
+                        setPageIndex(
+                          products?.pagination?.offset - paginationData.limit <
+                            0
+                            ? 0
+                            : products?.pagination?.offset -
+                                paginationData.limit
+                        );
+                        scrollToTop();
+                      }}
+                      sx={{
+                        alignSelf: "center",
+                        justifySelf: "center",
+                        textDecoration: "underline",
+                        textUnderlineOffset: "1px",
+                        marginTop: "0 !important",
+                        display: "inline-block",
+                      }}
+                    >
+                      {"< go back"}
+                    </SecondaryButton>
+                  )}
+                  {paginationData.offset + paginationData.limit <
+                    paginationData.total && (
+                    <SecondaryButton
+                      onClick={() => {
+                        setPageIndex(
+                          paginationData.limit + products?.pagination?.offset
+                        );
+                        scrollToTop();
+                      }}
+                      sx={{
+                        alignSelf: "center",
+                        justifySelf: "center",
+                        textDecoration: "underline",
+                        textUnderlineOffset: "1px",
+                        marginTop: "0 !important",
+                        display: "inline-block",
+                      }}
+                    >
+                      {"see more >"}
+                    </SecondaryButton>
+                  )}
+                </div>
+              </Box>
+            </>
+          )}
+        </Box>
+        {!isLoading && (
+          <Box
+            sx={{
+              "@media (min-width: 769px)": {
+                display: "inherit",
+              },
+              display: "none",
+            }}
+          >
             <div>
               {paginationData.offset + paginationData.limit !==
                 paginationData.limit && (
@@ -132,7 +252,7 @@ export function SearchPageComp() {
                 </SecondaryButton>
               )}
             </div>
-          </>
+          </Box>
         )}
       </Box>
     </Container>
