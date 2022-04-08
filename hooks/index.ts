@@ -12,7 +12,6 @@ export function useGetLocalData(item: LocalData) {
   useEffect(() => {
     const data = localStorage.getItem(item);
     data == "undefined" ? setData(null) : setData(data);
-    setData(data);
   }, []);
   return data;
 }
@@ -20,8 +19,8 @@ export function useGetLocalData(item: LocalData) {
 export function useIsLoggedIn() {
   let token = useGetLocalData("token");
   let email = useGetLocalData("email");
-  token ? (token = null) : token;
-  email ? (email = null) : email;
+  token ? token : (token = null);
+  email ? email : (email = null);
   const isLogged = token && email;
   return isLogged;
 }
