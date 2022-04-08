@@ -14,7 +14,7 @@ import {
   StyledInputBase,
 } from "components/header/styled";
 import { useRouter } from "next/router";
-import { useGetLocalData, useLogOut } from "hooks";
+import { useGetLocalData, useIsLoggedIn, useLogOut } from "hooks";
 
 type HeaderMobile = {
   searchBar: boolean;
@@ -27,6 +27,7 @@ export function HeaderMobile({ searchBar }: HeaderMobile) {
   const [input, setInput] = useState<null | string>(null);
   const token = useGetLocalData("token");
   const email = useGetLocalData("email");
+  const isLoggedIn = useIsLoggedIn();
   const logOut = useLogOut();
 
   const handleSearch = () => {
@@ -117,7 +118,7 @@ export function HeaderMobile({ searchBar }: HeaderMobile) {
               </>
             )}
             <Box>
-              {token && email && (
+              {isLoggedIn && (
                 <>
                   <TinyText color="white">{email}</TinyText>
                   <br />
@@ -126,7 +127,7 @@ export function HeaderMobile({ searchBar }: HeaderMobile) {
                   </SecondaryButton>
                 </>
               )}
-              {!token && (
+              {!isLoggedIn && (
                 <MainButton
                   color="pink"
                   sx={{ width: "150px" }}

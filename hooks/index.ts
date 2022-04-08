@@ -19,8 +19,11 @@ export function useGetLocalData(item: LocalData) {
 
 export function useIsLoggedIn() {
   let token = useGetLocalData("token");
-  !token ? (token = null) : token;
-  return !!token;
+  let email = useGetLocalData("email");
+  token ? (token = null) : token;
+  email ? (email = null) : email;
+  const isLogged = token && email;
+  return isLogged;
 }
 
 export function useLogOut() {

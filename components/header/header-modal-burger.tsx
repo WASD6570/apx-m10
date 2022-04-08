@@ -27,6 +27,7 @@ export function HeaderModalBurger({ color, openSearchBar }: any) {
   const router = useRouter();
   const isLoggedIn = useIsLoggedIn();
   const email = useGetLocalData("email");
+  const token = useGetLocalData("token");
   const logOut = useLogOut();
 
   const handleClickOpen = () => {
