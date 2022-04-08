@@ -6,6 +6,7 @@ export default function Document() {
       <Head>
         <link rel="stylesheet" href="/globals.css"></link>
       </Head>
+      <title>The best e-commerce</title>
       <body>
         <Main />
         <NextScript />
