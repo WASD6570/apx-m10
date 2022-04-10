@@ -3,6 +3,8 @@ import BlackCart from "../../assets/svg/Logo-black.svg";
 import Twitter from "../../assets/svg/twitter.svg";
 import Instagram from "../../assets/svg/instagram.svg";
 import APX from "../../assets/svg/a_2022_apx.svg";
+import LinkedIn from "../../assets/svg/linkedin.svg";
+import GitHub from "../../assets/svg/github.svg";
 
 type Props = {
   color: "black" | "white";
@@ -31,4 +33,12 @@ export function InstagramIcon() {
 
 export function APXIcon() {
   return <APX />;
+}
+
+export function LinkedInIcon() {
+  return <LinkedIn />;
+}
+
+export function GitHubIcon() {
+  return <GitHub />;
 }

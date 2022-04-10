@@ -54,7 +54,7 @@ export function SearchPageComp() {
           },
         }}
       >
-        {!isLoading && products?.results?.length && (
+        {!isLoading && products?.results?.length > 0 && (
           <Box
             sx={{
               "@media (min-width: 769px)": {
@@ -107,7 +107,7 @@ export function SearchPageComp() {
             },
           }}
         >
-          {!isLoading && products?.results?.length && (
+          {!isLoading && products?.results?.length > 0 && (
             <>
               <Box
                 sx={{
@@ -195,6 +195,14 @@ export function SearchPageComp() {
                 </div>
               </Box>
             </>
+          )}
+          {!isLoading && products?.results?.length === 0 && (
+            <Box sx={{ textAling: "center" }}>
+              <Title>
+                We did not found {`"${router.query.q}"`} <br />
+                <Subtitle>Try {'"desk" or "table"'}</Subtitle>
+              </Title>
+            </Box>
           )}
         </Box>
         {!isLoading && (

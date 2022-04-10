@@ -34,7 +34,7 @@ export function MainPage({ topProducts }: MainPageProps) {
           }}
         >
           <Title>
-            El mejor <br /> e-commerce
+            The best <br /> e-commerce
           </Title>
           <SearchWrapper style={{ width: "60vw" }}>
             <Input
@@ -90,7 +90,7 @@ export function MainPage({ topProducts }: MainPageProps) {
               display: "none",
             }}
           >
-            Productos <br /> destacados
+            Top <br /> Products
           </Subtitle>
           <Box
             sx={{
@@ -117,7 +117,7 @@ export function MainPage({ topProducts }: MainPageProps) {
                 },
               }}
             >
-              Productos <br /> destacados
+              Top <br /> Products
             </Subtitle>
             {topProducts.map((item, index) => {
               return (
