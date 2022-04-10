@@ -5,14 +5,21 @@ import { Subtitle, LargeText, Title, Text } from "ui/typography";
 import { StyledProductCard, StyledProductCardContent } from "ui/card";
 import CardMedia from "@mui/material/CardMedia";
 import { useCreateOrder } from "hooks/orders";
+import { useIsLoggedIn } from "hooks";
 
 export function ProductCard({ product, sx }: any) {
   const { data, isLoading, error, setData } = useCreateOrder();
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
   const router = useRouter();
+  const isLoggedIn = useIsLoggedIn();
+  console.log(isLoggedIn);
   const handleBuy = () => {
-    setData(product.objectID);
-    setButtonLoading(true);
+    if (isLoggedIn) {
+      setData(product.objectID);
+      setButtonLoading(true);
+    } else {
+      router.push("/login");
+    }
   };
 
   useEffect(() => {
