@@ -5,9 +5,12 @@ import { staticFetcher } from "lib/api";
 
 const Home: NextPage = ({ data }: any) => {
   return (
-    <Layout>
-      <MainPage topProducts={data} />
-    </Layout>
+    <>
+      <h1>rompo todo </h1>
+      <Layout>
+        <MainPage topProducts={data} />
+      </Layout>
+    </>
   );
 };
 
